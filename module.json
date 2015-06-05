@@ -1,0 +1,53 @@
+{
+    "dependencies": [],
+    "singleton": true,
+    "category": "logging",
+    "author": "Maroš Kollár",
+    "homepage": "http://k-1.com",
+    "icon": "myhome.png",
+    "version": "1.0.0",
+    "maturity": "stable",
+    "repository": {
+        "type": "git",
+        "source": "https://github.com/maros/Zway-InfluxDbStats"
+    },
+    "defaults": {
+        "title": "Send stats ",
+        "description": "Controll most aspects of my home",
+        "status": "home",
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            "username": {
+                "required": true
+            },
+            "password": {
+                "required": true
+            },
+            "database": {
+                "required": true
+            },
+            "url": {
+                "required": true
+            }
+        },
+        "required": true
+    },
+    "options": {
+        "fields": {
+            "username": {
+                "label": "Username"
+            },
+            "password": {
+                "label": "Password"
+            },
+            "database": {
+                "label": "InfluxDB database name"
+            },
+            "url": {
+                "label": "InfluxDB base url"
+            }
+        }
+    }
+}
