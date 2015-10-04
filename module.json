@@ -7,14 +7,14 @@
     "icon": "myhome.png",
     "version": "1.0.0",
     "maturity": "stable",
+    "moduleName": "InfluxDbStats",
     "repository": {
         "type": "git",
         "source": "https://github.com/maros/Zway-InfluxDbStats"
     },
     "defaults": {
-        "title": "Send stats ",
-        "description": "Controll most aspects of my home",
-        "status": "home",
+        "title": "Collect stats !L!",
+        "description": "Store sensor data in InfluxDB instances !L!"
     },
     "schema": {
         "type": "object",
@@ -30,6 +30,15 @@
             },
             "url": {
                 "required": true
+            },
+            "devices": {
+                "type": "array",
+                "items": {
+                    "required": true,
+                    "field": "enum",
+                    "datasource": "namespaces",
+                    "enum": "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId"
+                }
             }
         },
         "required": true
@@ -37,17 +46,29 @@
     "options": {
         "fields": {
             "username": {
-                "label": "Username"
+                "label": "__username_label__"
             },
             "password": {
-                "label": "Password"
+                "label": "__password_label__"
             },
             "database": {
-                "label": "InfluxDB database name"
+                "label": "__database_label__"
             },
             "url": {
-                "label": "InfluxDB base url"
-            }
+                "label": "__url_label__"
+            },
+            "devices": {
+                "label": "__devices_label__",
+                "helper": "__devices_helper__",
+                "fields": {
+                    "item": {
+                        "type": "select",
+                        "datasource": "namespaces",
+                        "field": "devices",
+                        "optionLabels": "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName"
+                    }
+                }
+            },
         }
     }
 }
