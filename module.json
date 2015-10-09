@@ -68,7 +68,7 @@
                         "optionLabels": "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName"
                     }
                 }
-            },
+            }
         }
     }
 }
