@@ -1,74 +1,74 @@
 {
-    "dependencies": [],
-    "singleton": true,
-    "category": "logging",
-    "author": "Maroš Kollár",
-    "homepage": "http://k-1.com",
-    "icon": "myhome.png",
-    "version": "1.0.0",
-    "maturity": "stable",
-    "moduleName": "InfluxDbStats",
-    "repository": {
-        "type": "git",
-        "source": "https://github.com/maros/Zway-InfluxDbStats"
+   "author" : "Maroš Kollár",
+   "category" : "logging",
+   "defaults" : {
+      "description" : "__description__",
+      "title" : "__title__"
+   },
+   "singleton" : true,
+   "version" : "1.0.0",
+   "dependencies" : [],
+   "homepage" : "http://k-1.com",
+   "icon" : "myhome.png",
+   "maturity" : "stable",
+   "moduleName" : "InfluxDbStats",
+   "repository" : {
+       "source" : "https://github.com/maros/Zway-InfluxDbStats",
+       "type" : "git"
     },
-    "defaults": {
-        "title": "Collect stats !L!",
-        "description": "Store sensor data in InfluxDB instances !L!"
+    "schema" : {
+       "properties" : {
+          "database" : {
+             "required" : true
+          },
+          "devices" : {
+             "items" : {
+                "datasource" : "namespaces",
+                "enum" : "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId",
+                "field" : "enum",
+                "required" : true
+             },
+             "type" : "array"
+          },
+          "password" : {
+             "required" : true
+          },
+          "url" : {
+             "required" : true
+          },
+          "username" : {
+             "required" : true
+          }
+       },
+       "required" : true,
+       "type" : "object"
     },
-    "schema": {
-        "type": "object",
-        "properties": {
-            "username": {
-                "required": true
+    "options" : {
+      "fields" : {
+         "database" : {
+            "label" : "__database_label__"
+         },
+         "devices" : {
+            "fields" : {
+               "item" : {
+                  "datasource" : "namespaces",
+                  "field" : "devices",
+                  "optionLabels" : "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName",
+                  "type" : "select"
+               }
             },
-            "password": {
-                "required": true
-            },
-            "database": {
-                "required": true
-            },
-            "url": {
-                "required": true
-            },
-            "devices": {
-                "type": "array",
-                "items": {
-                    "required": true,
-                    "field": "enum",
-                    "datasource": "namespaces",
-                    "enum": "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId"
-                }
-            }
-        },
-        "required": true
-    },
-    "options": {
-        "fields": {
-            "username": {
-                "label": "__username_label__"
-            },
-            "password": {
-                "label": "__password_label__"
-            },
-            "database": {
-                "label": "__database_label__"
-            },
-            "url": {
-                "label": "__url_label__"
-            },
-            "devices": {
-                "label": "__devices_label__",
-                "helper": "__devices_helper__",
-                "fields": {
-                    "item": {
-                        "type": "select",
-                        "datasource": "namespaces",
-                        "field": "devices",
-                        "optionLabels": "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName"
-                    }
-                }
-            }
-        }
-    }
+            "helper" : "__devices_helper__",
+            "label" : "__devices_label__"
+         },
+         "password" : {
+            "label" : "__password_label__"
+         },
+         "url" : {
+            "label" : "__url_label__"
+         },
+         "username" : {
+            "label" : "__username_label__"
+         }
+      }
+   }
 }

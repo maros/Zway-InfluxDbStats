@@ -1,0 +1,10 @@
+{
+   "database_label" : "Database name",
+   "description" : "Store sensor data in InfluxDB instances ",
+   "devices_helper" : "List of devices to be monitored",
+   "devices_label" : "Devices",
+   "password_label" : "Database password",
+   "title" : "Collect stats via InfluxDb",
+   "url_label" : "Database URL",
+   "username_label" : "Database username"
+}
