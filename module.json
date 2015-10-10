@@ -9,7 +9,7 @@
    "version" : "1.0.0",
    "dependencies" : [],
    "homepage" : "http://k-1.com",
-   "icon" : "myhome.png",
+   "icon" : "icon.png",
    "maturity" : "stable",
    "moduleName" : "InfluxDbStats",
    "repository" : {
