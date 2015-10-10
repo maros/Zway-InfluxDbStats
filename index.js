@@ -34,8 +34,9 @@ InfluxDbStats.prototype.init = function (config) {
     
     _.each(self.config.devices,function(deviceId){
         // Build, register and call check callback
+        var device  = self.controller.devices.get(deviceId);
         var callback = _.bind(self.updateDevice,self,deviceId);
-        self.callbacks[deviceId] = deviceObject.on('change:metrics:level',callback);
+        self.callbacks[deviceId] = device.on('change:metrics:level',callback);
     });
     
     this.timer = setInterval(_.bind(self.updateAll,self), 60*60*1000);
@@ -62,11 +63,49 @@ InfluxDbStats.prototype.stop = function () {
 // ----------------------------------------------------------------------------
 
 InfluxDbStats.prototype.updateDevice = function (deviceId) {
-    //escape comma and space
-    //id,room=serverA,tag=value level=XXX
-}
+    var self = this;
+    // TODO;Ensure that not called too often
+    var lines = [
+        self.collectDevice(deviceId)
+    ];
+    self.sendStats(lines);
+};
+
+InfluxDbStats.prototype.escapeValue = function (value) {
+    var self = this;
+    if (typeof(value) === 'undefined') {
+        return 'none';
+    }
+    return value.replace(/[, ]/, '\\$1');
+};
 
 
-InfluxDbStats.prototype.sendStats = function () {
-    // http request
+InfluxDbStats.prototype.collectDevice = function (deviceId) {
+    var self = this;
+    var device  = self.controller.devices.get(deviceId);
+    
+    var level = device.get('metrics:level');
+    var scale = device.get('metrics:scaleTitle');
+    var room = device.get('metrics:room');
+    
+    return self.escapeValue(deviceId) +
+        ',room=' + self.escapeValue(room) +
+        ',scale=' + self.escapeValue(scale) +
+        ' level=' + self.escapeValue(level);
+};
+
+InfluxDbStats.prototype.updateAll = function () {
+    var self = this;
+    
+    var lines = [];
+    _.each(self.config.devices,function(deviceId){
+        lines.push(self.collectDevice(deviceId));
+    });
+    
+    self.sendStats(lines);
+};
+
+
+InfluxDbStats.prototype.sendStats = function (lines) {
+    console.logJS(sendStats);
 };
