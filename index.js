@@ -81,14 +81,18 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 
 
 InfluxDbStats.prototype.collectDevice = function (deviceId) {
-    var self = this;
+    var self    = this;
     var device  = self.controller.devices.get(deviceId);
     
-    var level = device.get('metrics:level');
-    var scale = device.get('metrics:scaleTitle');
-    var room = device.get('metrics:room');
+    var level   = device.get('metrics:level');
+    var scale   = device.get('metrics:scaleTitle');
+    var title   = device.get('metrics:title');
+    var room    = device.get('metrics:room');
+    var type    = device.get('deviceType');
     
-    return self.escapeValue(deviceId) +
+    return 'device.' + self.escapeValue(deviceId) +
+        ',type=' + type +
+        ',title=' + self.escapeValue(title) +
         ',room=' + self.escapeValue(room) +
         ',scale=' + self.escapeValue(scale) +
         ' level=' + self.escapeValue(level);
@@ -107,5 +111,6 @@ InfluxDbStats.prototype.updateAll = function () {
 
 
 InfluxDbStats.prototype.sendStats = function (lines) {
+    console.log('############################################################');
     console.logJS(sendStats);
 };
