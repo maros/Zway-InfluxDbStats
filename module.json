@@ -34,7 +34,8 @@
              "required" : true
           },
           "server" : {
-             "required" : true
+             "required" : true,
+             "format": "uri"
           },
           "username" : {
              "required" : true
@@ -68,7 +69,8 @@
          },
          "server" : {
             "label" : "__server_label__",
-            "helper" : "__server_helper__"
+            "helper" : "__server_helper__",
+            "type": "url"
          },
          "username" : {
             "label" : "__username_label__"

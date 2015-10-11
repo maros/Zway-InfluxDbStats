@@ -61,14 +61,12 @@ InfluxDbStats.prototype.stop = function () {
     
     // Remove callbacks
     _.each(self.callbacks,function(deviceId,callbackFunction){
-        // Build, register and call check callback
-        var device  = self.controller.devices.get(deviceId);
-        device.off('change:metrics:level',callbackFunction);
+        self.controller.devices.off(deviceId, 'change:metrics:level', callbackFunction);
     });
     self.callbacks = {};
     
     // Remove timer
-    clearTimeout(self.timer);
+    clearInterval(self.timer);
     
     InfluxDbStats.super_.prototype.stop.call(this);
 };
@@ -142,18 +140,28 @@ InfluxDbStats.prototype.updateAll = function () {
 InfluxDbStats.prototype.sendStats = function (lines) {
     var self = this;
     
-    var url = self.config.url
+    if (lines.length === 0) {
+        return;
+    }
+    
+    var url = self.config.server
+        + ':8086/db/write'
         + '?u='
         + encodeURIComponent(self.config.username)
         + '&p='
-        + encodeURIComponent(self.config.password);
+        + encodeURIComponent(self.config.password)
+        + '&db='
+        + encodeURIComponent(self.config.database);
+    
+    
+    var data = lines.join("\n");
     
     http.request({
         url:    url,
         async:  true,
         method: 'POST',
-        data:   lines.join('\n'),
-        error:  function() {
+        data:   data,
+        error:  function(response) {
             console.error('Could not post stats');
         }
     });
