@@ -5,6 +5,8 @@
    "devices_label" : "Devices",
    "password_label" : "Database password",
    "title" : "Collect stats via InfluxDb",
-   "url_label" : "Database URL",
+   "server_label" : "Database Server URL",
+   "server_helper" : "The final url used for writing will be $URL:8086/db/write",
+   "database_label" : "Database name",
    "username_label" : "Database username"
 }
