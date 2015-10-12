@@ -39,9 +39,6 @@
           },
           "username" : {
              "required" : true
-          },
-          "database" : {
-              "required" : true
           }
        },
        "required" : true,
@@ -74,9 +71,6 @@
          },
          "username" : {
             "label" : "__username_label__"
-         },
-         "database" : {
-            "label" : "__database_label__"
          }
       }
    }
