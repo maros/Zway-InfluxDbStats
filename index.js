@@ -118,10 +118,10 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     }
     
     return 'device.' + self.escapeValue(deviceId) +
-        ',type=' + type +
-        ',title=' + self.escapeValue(title) +
-        ',room=' + self.escapeValue(room) +
+        ' room=' + self.escapeValue(room) +
         ',scale=' + self.escapeValue(scale) +
+        ',title=' + self.escapeValue(title) +
+        ',type=' + type +
         ' level=' + self.escapeValue(level);
 };
 
@@ -155,6 +155,10 @@ InfluxDbStats.prototype.sendStats = function (lines) {
     
     
     var data = lines.join("\n");
+    console.log('XXXXXXXX');
+    console.log(url);
+    console.logJS(data);
+    console.log('XXXXXXXX');
     
     http.request({
         url:    url,
@@ -163,6 +167,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         data:   data,
         error:  function(response) {
             console.error('Could not post stats');
+            console.logJS(response);
         }
     });
 };
