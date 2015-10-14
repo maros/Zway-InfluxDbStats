@@ -106,6 +106,7 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     
     var level       = device.get('metrics:level');
     var scale       = device.get('metrics:scaleTitle');
+    var probe       = device.get('metrics:probeTitle');
     var title       = device.get('metrics:title');
     var location    = parseInt(device.get('location'));
     var type        = device.get('deviceType');
@@ -119,6 +120,7 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     
     return 'device.' + self.escapeValue(deviceId) +
         ' room=' + self.escapeValue(room) +
+        ',probe=' + self.escapeValue(probe) +
         ',scale=' + self.escapeValue(scale) +
         ',title=' + self.escapeValue(title) +
         ',type=' + type +
