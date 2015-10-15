@@ -119,8 +119,8 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     }
     
     return 'device.' + self.escapeValue(deviceId) +
-        ' room=' + self.escapeValue(room) +
-        ',probe=' + self.escapeValue(probe) +
+        ' probe=' + self.escapeValue(probe) +
+        ',room=' + self.escapeValue(room) +
         ',scale=' + self.escapeValue(scale) +
         ',title=' + self.escapeValue(title) +
         ',type=' + type +
@@ -147,7 +147,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
     }
     
     var url = self.config.server
-        + ':8086/db/write'
+        + ':8086/write'
         + '?u='
         + encodeURIComponent(self.config.username)
         + '&p='
