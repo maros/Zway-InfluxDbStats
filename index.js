@@ -16,6 +16,10 @@ Description:
 function InfluxDbStats (id, controller) {
     // Call superconstructor first (AutomationModule)
     InfluxDbStats.super_.call(this, id, controller);
+    
+    this.interval   = undefined;
+    this.callbacks  = {};
+    this.url        = undefined;
 }
 
 inherits(InfluxDbStats, AutomationModule);
@@ -28,10 +32,8 @@ _module = InfluxDbStats;
 
 InfluxDbStats.prototype.init = function (config) {
     InfluxDbStats.super_.prototype.init.call(this, config);
-    
     var self = this;
-    self.interval = undefined;
-    self.callbacks = {};
+    
     self.url = self.config.server
         + ':8086/write'
         + '?db='
@@ -50,8 +52,11 @@ InfluxDbStats.prototype.init = function (config) {
     });
     
     if (typeof(self.config.interval) !== 'undefined') {
-        this.interval = setInterval(_.bind(self.updateAll,self), (this.config.interval*60*1000));
+        var interval = parseInt(self.config.interval) * 60 * 1000;
+        console.log('[InfluxDb]'+self.url+' - '+interval);
+        self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
+    
     setTimeout(_.bind(self.initCallback,self),30 * 1000);
     //self.updateCalculation();
 };
@@ -74,8 +79,9 @@ InfluxDbStats.prototype.stop = function () {
     var self = this;
     
     // Remove callbacks
-    _.each(self.callbacks,function(deviceId,callbackFunction){
-        self.controller.devices.off(deviceId, 'change:metrics:level', callbackFunction);
+    _.each(self.config.devices,function(deviceId){
+        self.controller.devices.off(deviceId, 'change:metrics:level', self.callbacks[deviceId]);
+        self.callbacks[deviceId] = undefined;
     });
     self.callbacks = {};
     
@@ -109,7 +115,7 @@ InfluxDbStats.prototype.escapeValue = function (value) {
             return value;
             break;
         case 'string':
-            return value.replace(/(,|\s)/g, '\$1');
+            return value.replace(/(,|\s+)/g, '\\$1');
             break;
     }
     return 'null';
@@ -135,7 +141,7 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     }
     
     return 'device.' + self.escapeValue(deviceId) +
-        ' probe=' + self.escapeValue(probe) +
+        ',probe=' + self.escapeValue(probe) +
         ',room=' + self.escapeValue(room) +
         ',scale=' + self.escapeValue(scale) +
         ',title=' + self.escapeValue(title) +
@@ -146,6 +152,7 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
 InfluxDbStats.prototype.updateAll = function () {
     var self = this;
     
+    console.log('[InfluxDB] Update all');
     var lines = [];
     _.each(self.config.devices,function(deviceId){
         lines.push(self.collectDevice(deviceId));
@@ -161,12 +168,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
     if (lines.length === 0) {
         return;
     }
-    
     var data = lines.join("\n");
-    console.log('XXXXXXXX');
-    console.log(self.url);
-    console.logJS(data);
-    console.log('XXXXXXXX');
     
     http.request({
         url:    self.url,
