@@ -1,7 +1,7 @@
 # Zway-InfluxDbStats
 
 Store sensor data in InfluxDB instances. Sensor and device data is transfered
-once every 30 minutes, as well as every time a change occurs.
+periodically, as well as every time a change occurs.
 
 # Configuration
 
@@ -24,6 +24,10 @@ Database server including the protocol (http:// or https://) but not the port.
 ## devices
 
 List of devices to be monitored
+
+## interval
+
+Sets an interval for periodic stats updates. If left empty the values will only be transfered on change (not recommended)
 
 # Virtual Devices
 
