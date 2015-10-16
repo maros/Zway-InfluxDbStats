@@ -3,6 +3,9 @@
 Store sensor data in InfluxDB instances. Sensor and device data is transfered
 periodically, as well as every time a change occurs.
 
+Since this module uses the new line protocol, it requires at least InfluxDb
+version 0.9.0.
+
 # Configuration
 
 ## database
