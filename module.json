@@ -39,7 +39,10 @@
           },
           "username" : {
              "required" : true
-          }
+          },
+          "interval" : {
+              "type": "number"
+          },
        },
        "required" : true,
        "type" : "object"
@@ -71,7 +74,11 @@
          },
          "username" : {
             "label" : "__username_label__"
-         }
+         },
+         "interval" : {
+             "label" : "__interval_label__",
+             "helper" : "__interval_helper__",
+         },
       }
    }
 }

@@ -8,5 +8,7 @@
    "server_label" : "Database Server URL",
    "server_helper" : "The final url used for writing will be $URL:8086/write",
    "database_label" : "Database name",
-   "username_label" : "Database username"
+   "username_label" : "Database username",
+   "interval_label" : "Update interval",
+   "interval_helper" : "Sets the interval (in minutes) for statistics updates. If left empty, then the statistics will only be updates if values change (not recommended)."
 }

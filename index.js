@@ -30,6 +30,7 @@ InfluxDbStats.prototype.init = function (config) {
     InfluxDbStats.super_.prototype.init.call(this, config);
     
     var self = this;
+    self.interval = undefined;
     self.callbacks = {};
     
     _.each(self.config.devices,function(deviceId){
@@ -37,7 +38,9 @@ InfluxDbStats.prototype.init = function (config) {
         var device  = self.controller.devices.get(deviceId);
     });
     
-    this.timer = setInterval(_.bind(self.updateAll,self), (1*60*1000));
+    if (typeof(self.config.interval) !== 'undefined') {
+        this.interval = setInterval(_.bind(self.updateAll,self), (this.config.interval*60*1000));
+    }
     setTimeout(_.bind(self.initCallback,self),30 * 1000);
     //self.updateCalculation();
 };
@@ -65,8 +68,10 @@ InfluxDbStats.prototype.stop = function () {
     });
     self.callbacks = {};
     
-    // Remove timer
-    clearInterval(self.timer);
+    // Remove interval
+    if (typeof(self.interval) !== 'undefined') {
+        clearInterval(self.interval);
+    }
     
     InfluxDbStats.super_.prototype.stop.call(this);
 };
