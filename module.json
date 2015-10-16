@@ -77,8 +77,8 @@
          },
          "interval" : {
              "label" : "__interval_label__",
-             "helper" : "__interval_helper__",
-         },
+             "helper" : "__interval_helper__"
+         }
       }
    }
 }
