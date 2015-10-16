@@ -31,14 +31,12 @@
              "type" : "array"
           },
           "password" : {
-             "required" : true
           },
           "server" : {
              "required" : true,
              "format": "uri"
           },
           "username" : {
-             "required" : true
           },
           "interval" : {
               "type": "number"

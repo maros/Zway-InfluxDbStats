@@ -32,6 +32,17 @@ InfluxDbStats.prototype.init = function (config) {
     var self = this;
     self.interval = undefined;
     self.callbacks = {};
+    self.url = self.config.server
+        + ':8086/write'
+        + '?db='
+        + encodeURIComponent(self.config.database);
+    
+    if (typeof(self.config.username) !== 'undefined') {
+        self.url = self.url + '&u=' + encodeURIComponent(self.config.username);
+    }
+    if (typeof(self.config.password) !== 'undefined') {
+        self.url = self.url + '&p=' + encodeURIComponent(self.config.password);
+    }
     
     _.each(self.config.devices,function(deviceId){
         // Build, register and call check callback
@@ -151,24 +162,14 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         return;
     }
     
-    var url = self.config.server
-        + ':8086/write'
-        + '?u='
-        + encodeURIComponent(self.config.username)
-        + '&p='
-        + encodeURIComponent(self.config.password)
-        + '&db='
-        + encodeURIComponent(self.config.database);
-    
-    
     var data = lines.join("\n");
     console.log('XXXXXXXX');
-    console.log(url);
+    console.log(self.url);
     console.logJS(data);
     console.log('XXXXXXXX');
     
     http.request({
-        url:    url,
+        url:    self.url,
         async:  true,
         method: 'POST',
         data:   data,
