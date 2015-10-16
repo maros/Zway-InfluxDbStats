@@ -9,13 +9,9 @@ periodically, as well as every time a change occurs.
 
 Database name
 
-## database
-
-Database name
-
 ## username, password
 
-Credentials
+Database credentials
 
 ## server
 
