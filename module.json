@@ -42,7 +42,7 @@
           },
           "interval" : {
               "type": "number"
-          },
+          }
        },
        "required" : true,
        "type" : "object"
