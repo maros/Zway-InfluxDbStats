@@ -6,6 +6,15 @@ periodically, as well as every time a change occurs.
 Since this module uses the new line protocol, it requires at least InfluxDb
 version 0.9.0.
 
+Data is stored under 'device.$DeviceID$', with only one measurement key 
+called 'level' The following tags are also added:
+
+* probe: Probe title (eg. 'temperature')
+* room: Room name
+* scale: Scale title (eg. '°C')
+* type: Basic device type (eg. 'multilevelSensor')
+* title: Device name
+
 # Configuration
 
 ## database
