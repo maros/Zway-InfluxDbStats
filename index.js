@@ -20,6 +20,7 @@ function InfluxDbStats (id, controller) {
     this.interval   = undefined;
     this.callbacks  = {};
     this.url        = undefined;
+    this.langfile   = undefined;
 }
 
 inherits(InfluxDbStats, AutomationModule);
@@ -33,6 +34,8 @@ _module = InfluxDbStats;
 InfluxDbStats.prototype.init = function (config) {
     InfluxDbStats.super_.prototype.init.call(this, config);
     var self = this;
+    
+    self.langFile   = self.controller.loadModuleLang("InfluxDbStats");
     
     self.url = self.config.server
         + ':8086/write'
@@ -176,8 +179,15 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         method: 'POST',
         data:   data,
         error:  function(response) {
-            console.error('Could not post stats');
+            console.error('[InfluxDb] Could not post stats');
             console.logJS(response);
+            
+            self.controller.addNotification(
+                "error", 
+                self.langFile.error, 
+                "module", 
+                "InfluxDbStats"
+            );
         }
     });
 };
