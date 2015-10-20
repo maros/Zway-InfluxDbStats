@@ -70,7 +70,9 @@ InfluxDbStats.prototype.initCallback = function() {
     _.each(self.config.devices,function(deviceId){
         // Build, register and call check callback
         var device  = self.controller.devices.get(deviceId);
-        if (typeof(device) !== 'undefined') {
+        if (device == 'null') {
+            console.error('[InfluxDbStats] Device not found '+deviceId);
+        } else {
             var callback = _.bind(self.updateDevice,self,deviceId);
             self.callbacks[deviceId] = callback;
             device.on('change:metrics:level',callback);
