@@ -54,7 +54,7 @@
             "fields" : {
                "item" : {
                   "datasource" : "namespaces",
-                  "field" : "devices",
+                  "field" : "optionLabels",
                   "optionLabels" : "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName",
                   "type" : "select"
                }
