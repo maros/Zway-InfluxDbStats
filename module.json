@@ -5,47 +5,12 @@
       "description" : "__description__",
       "title" : "__title__"
    },
-   "singleton" : true,
-   "version" : "1.0.0",
    "dependencies" : [],
    "homepage" : "http://k-1.com",
    "icon" : "icon.png",
    "maturity" : "stable",
    "moduleName" : "InfluxDbStats",
-   "repository" : {
-       "source" : "https://github.com/maros/Zway-InfluxDbStats",
-       "type" : "git"
-    },
-    "schema" : {
-       "properties" : {
-          "database" : {
-             "required" : true
-          },
-          "devices" : {
-             "items" : {
-                "datasource" : "namespaces",
-                "enum" : "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId",
-                "field" : "enum",
-                "required" : true
-             },
-             "type" : "array"
-          },
-          "password" : {
-          },
-          "server" : {
-             "required" : true,
-             "format": "uri"
-          },
-          "username" : {
-          },
-          "interval" : {
-              "type": "number"
-          }
-       },
-       "required" : true,
-       "type" : "object"
-    },
-    "options" : {
+   "options" : {
       "fields" : {
          "database" : {
             "label" : "__database_label__"
@@ -62,21 +27,54 @@
             "helper" : "__devices_helper__",
             "label" : "__devices_label__"
          },
+         "interval" : {
+            "helper" : "__interval_helper__",
+            "label" : "__interval_label__"
+         },
          "password" : {
             "label" : "__password_label__"
          },
          "server" : {
-            "label" : "__server_label__",
             "helper" : "__server_helper__",
-            "type": "url"
+            "label" : "__server_label__",
+            "type" : "url"
          },
          "username" : {
             "label" : "__username_label__"
-         },
-         "interval" : {
-             "label" : "__interval_label__",
-             "helper" : "__interval_helper__"
          }
       }
-   }
+   },
+   "repository" : {
+      "source" : "https://github.com/maros/Zway-InfluxDbStats",
+      "type" : "git"
+   },
+   "schema" : {
+      "properties" : {
+         "database" : {
+            "required" : true
+         },
+         "devices" : {
+            "items" : {
+               "datasource" : "namespaces",
+               "enum" : "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId",
+               "field" : "enum",
+               "required" : true
+            },
+            "type" : "array"
+         },
+         "interval" : {
+            "type" : "number"
+         },
+         "password" : {},
+         "server" : {
+            "format" : "uri",
+            "required" : true
+         },
+         "username" : {}
+      },
+      "required" : true,
+      "type" : "object"
+   },
+   "singleton" : true,
+   "version" : "1.01"
 }
