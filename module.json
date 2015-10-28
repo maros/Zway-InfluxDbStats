@@ -13,7 +13,8 @@
    "options" : {
       "fields" : {
          "database" : {
-            "label" : "__database_label__"
+            "label" : "__database_label__",
+            "order": 2
          },
          "devices" : {
             "fields" : {
@@ -25,22 +26,27 @@
                }
             },
             "helper" : "__devices_helper__",
-            "label" : "__devices_label__"
+            "label" : "__devices_label__",
+            "order": 5
          },
          "interval" : {
             "helper" : "__interval_helper__",
-            "label" : "__interval_label__"
+            "label" : "__interval_label__",
+            "order": 6
          },
          "password" : {
-            "label" : "__password_label__"
+            "label" : "__password_label__",
+            "order": 4
          },
          "server" : {
             "helper" : "__server_helper__",
             "label" : "__server_label__",
-            "type" : "url"
+            "type" : "url",
+            "order": 1
          },
          "username" : {
-            "label" : "__username_label__"
+            "label" : "__username_label__",
+            "order": 3
          }
       }
    },
