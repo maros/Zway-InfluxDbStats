@@ -3,7 +3,7 @@
 Version: 1.00
 (c) Maroš Kollár, 2015
 -----------------------------------------------------------------------------
-Author: maros@k-1.com <maros@k-1.com>
+Author: Maroš Kollár <maros@k-1.com>
 Description:
     Collects sensor stats in an InfluxDB
 
