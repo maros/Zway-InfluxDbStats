@@ -66,6 +66,7 @@
                "field" : "enum",
                "required" : true
             },
+            "uniqueItems": true,
             "type" : "array"
          },
          "interval" : {
