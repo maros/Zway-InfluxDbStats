@@ -70,7 +70,7 @@ InfluxDbStats.prototype.initCallback = function() {
     _.each(self.config.devices,function(deviceId){
         // Build, register and call check callback
         var device  = self.controller.devices.get(deviceId);
-        if (device == 'null') {
+        if (device === null) {
             console.error('[InfluxDbStats] Device not found '+deviceId);
         } else {
             var callback = _.bind(self.updateDevice,self,deviceId);
@@ -85,7 +85,12 @@ InfluxDbStats.prototype.stop = function () {
     
     // Remove callbacks
     _.each(self.config.devices,function(deviceId){
-        self.controller.devices.off(deviceId, 'change:metrics:level', self.callbacks[deviceId]);
+        var device  = self.controller.devices.get(deviceId);
+        if (device === null) {
+            console.error('[InfluxDbStats] Device not found '+deviceId);
+        } else {
+            device.off('change:metrics:level', self.callbacks[deviceId]);
+        }
         self.callbacks[deviceId] = undefined;
     });
     self.callbacks = {};
