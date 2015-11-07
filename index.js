@@ -49,11 +49,6 @@ InfluxDbStats.prototype.init = function (config) {
         self.url = self.url + '&p=' + encodeURIComponent(self.config.password);
     }
     
-    _.each(self.config.devices,function(deviceId){
-        // Build, register and call check callback
-        var device  = self.controller.devices.get(deviceId);
-    });
-    
     if (typeof(self.config.interval) !== 'undefined') {
         var interval = parseInt(self.config.interval) * 60 * 1000;
         console.log('[InfluxDb]'+self.url+' - '+interval);
@@ -191,7 +186,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
             
             self.controller.addNotification(
                 "error", 
-                self.langFile.error, 
+                self.langFile.error,
                 "module", 
                 "InfluxDbStats"
             );
