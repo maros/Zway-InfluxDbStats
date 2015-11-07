@@ -64,13 +64,13 @@ InfluxDbStats.prototype.initCallback = function() {
     
     _.each(self.config.devices,function(deviceId){
         // Build, register and call check callback
-        var device  = self.controller.devices.get(deviceId);
-        if (device === null) {
+        var deviceObject  = self.controller.devices.get(deviceId);
+        if (deviceObject === null) {
             console.error('[InfluxDbStats] Device not found '+deviceId);
         } else {
             var callback = _.bind(self.updateDevice,self,deviceId);
             self.callbacks[deviceId] = callback;
-            device.on('change:metrics:level',callback);
+            deviceObject.on('change:metrics:level',callback);
         }
     });
 };
@@ -80,11 +80,11 @@ InfluxDbStats.prototype.stop = function () {
     
     // Remove callbacks
     _.each(self.config.devices,function(deviceId){
-        var device  = self.controller.devices.get(deviceId);
-        if (device === null) {
+        var deviceObject  = self.controller.devices.get(deviceId);
+        if (deviceObject === null) {
             console.error('[InfluxDbStats] Device not found '+deviceId);
         } else {
-            device.off('change:metrics:level', self.callbacks[deviceId]);
+            deviceObject.off('change:metrics:level', self.callbacks[deviceId]);
         }
         self.callbacks[deviceId] = undefined;
     });
@@ -129,14 +129,14 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 
 InfluxDbStats.prototype.collectDevice = function (deviceId) {
     var self    = this;
-    var device  = self.controller.devices.get(deviceId);
+    var deviceObject  = self.controller.devices.get(deviceId);
     
-    var level       = device.get('metrics:level');
-    var scale       = device.get('metrics:scaleTitle');
-    var probe       = device.get('metrics:probeTitle');
-    var title       = device.get('metrics:title');
-    var location    = parseInt(device.get('location'));
-    var type        = device.get('deviceType');
+    var level       = deviceObject.get('metrics:level');
+    var scale       = deviceObject.get('metrics:scaleTitle');
+    var probe       = deviceObject.get('metrics:probeTitle');
+    var title       = deviceObject.get('metrics:title');
+    var location    = parseInt(deviceObject.get('location'));
+    var type        = deviceObject.get('deviceType');
     var room        = _.find(
         self.controller.locations, 
         function(item){ return (item.id === location) }
