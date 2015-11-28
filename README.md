@@ -51,7 +51,7 @@ You will need access to a working InfluxDB instance.
 
 ```shell
 cd /opt/z-way-server/automation/modules
-git clone https://github.com/maros/Zway-InfluxDB.git InfluxDB --branch latest
+git clone https://github.com/maros/Zway-InfluxDbStats.git InfluxDbStats --branch latest
 ```
 
 To update or install a specific version
