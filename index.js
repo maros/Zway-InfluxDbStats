@@ -50,7 +50,7 @@ InfluxDbStats.prototype.init = function (config) {
     }
     
     if (typeof(self.config.interval) !== 'undefined') {
-        var interval = parseInt(self.config.interval) * 60 * 1000;
+        var interval = parseInt(self.config.interval,10) * 60 * 1000;
         console.log('[InfluxDb]'+self.url+' - '+interval);
         self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
@@ -118,10 +118,8 @@ InfluxDbStats.prototype.escapeValue = function (value) {
     switch(typeof(value)) {
         case 'number':
             return value;
-            break;
         case 'string':
             return value.replace(/(,|\s+)/g, '\\$1');
-            break;
     }
     return 'null';
 };
@@ -133,13 +131,13 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
     
     var level       = deviceObject.get('metrics:level');
     var scale       = deviceObject.get('metrics:scaleTitle');
-    var probe       = deviceObject.get('metrics:probeTitle');
+    var probe       = deviceObject.get('metrics:probeTitle') || deviceObject.get('probeType');
     var title       = deviceObject.get('metrics:title');
-    var location    = parseInt(deviceObject.get('location'));
+    var location    = parseInt(deviceObject.get('location'),10);
     var type        = deviceObject.get('deviceType');
     var room        = _.find(
         self.controller.locations, 
-        function(item){ return (item.id === location) }
+        function(item){ return (item.id === location); }
     );
     if (typeof(room) === 'object') {
         room = room.title;
