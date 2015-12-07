@@ -133,6 +133,31 @@ InfluxDbStats.prototype.updateAll = function () {
         lines.push(self.collectDevice(deviceId));
     });
     
+    if (global.ZWave) {
+        for (var zwayName in global.ZWave) {
+            var zway = global.ZWave && global.ZWave[zwayName].zway;
+            if (zway) {
+                for(var deviceIndex in zway.devices) {
+                    var device = zway.devices[deviceIndex];
+                    if (typeof(device) !== 'undefined' && deviceIndex !== 1) {
+                        var deviceData  = device.data;
+                        var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
+                        lines.push(
+                            'zwave.' + self.escapeValue(deviceIndex) +
+                            ',title=' + self.escapeValue(deviceData.givenName.value) +
+                            ',type=' + self.escapeValue(deviceData.basicType.value) +
+                            ' failed=' + self.escapeValue(deviceData.countFailed.value) +
+                            ',failure=' + self.escapeValue(deviceData.failureCount.value) +
+                            ',success=' + self.escapeValue(deviceData.countSuccess.value) +
+                            ',queue=' + self.escapeValue(deviceData.queueLength.value) +
+                            (typeof(batteryData) !== 'undefined' ? ',battery=' + self.escapeValue(batteryData.data.last.value) : '')
+                        );
+                    }
+                }
+            }
+        }
+    }
+    
     self.sendStats(lines);
 };
 
