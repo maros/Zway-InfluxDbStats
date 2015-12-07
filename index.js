@@ -17,10 +17,10 @@ function InfluxDbStats (id, controller) {
     // Call superconstructor first (AutomationModule)
     InfluxDbStats.super_.call(this, id, controller);
     
-    this.interval   = undefined;
-    this.callbacks  = {};
-    this.url        = undefined;
-    this.langfile   = undefined;
+    this.interval       = undefined;
+    this.url            = undefined;
+    this.langfile       = undefined;
+    this.commandClass   = 0x80;
 }
 
 inherits(InfluxDbStats, AutomationModule);
@@ -55,40 +55,12 @@ InfluxDbStats.prototype.init = function (config) {
         self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
     
-    setTimeout(_.bind(self.initCallback,self),30 * 1000);
+    setTimeout(_.bind(self.updateAll,self),30 * 1000);
     //self.updateCalculation();
-};
-
-InfluxDbStats.prototype.initCallback = function() {
-    var self = this;
-    
-    _.each(self.config.devices,function(deviceId){
-        // Build, register and call check callback
-        var deviceObject  = self.controller.devices.get(deviceId);
-        if (deviceObject === null) {
-            console.error('[InfluxDbStats] Device not found '+deviceId);
-        } else {
-            var callback = _.bind(self.updateDevice,self,deviceId);
-            self.callbacks[deviceId] = callback;
-            deviceObject.on('change:metrics:level',callback);
-        }
-    });
 };
 
 InfluxDbStats.prototype.stop = function () {
     var self = this;
-    
-    // Remove callbacks
-    _.each(self.config.devices,function(deviceId){
-        var deviceObject  = self.controller.devices.get(deviceId);
-        if (deviceObject === null) {
-            console.error('[InfluxDbStats] Device not found '+deviceId);
-        } else {
-            deviceObject.off('change:metrics:level', self.callbacks[deviceId]);
-        }
-        self.callbacks[deviceId] = undefined;
-    });
-    self.callbacks = {};
     
     // Remove interval
     if (typeof(self.interval) !== 'undefined') {
