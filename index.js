@@ -129,8 +129,12 @@ InfluxDbStats.prototype.updateAll = function () {
     
     console.log('[InfluxDB] Update all');
     var lines = [];
-    _.each(self.config.devices,function(deviceId){
-        lines.push(self.collectDevice(deviceId));
+    
+    self.controller.devices.each(function(vDev) {
+        var tags = vDev.get('tags');
+        if (_.intersection(tags, self.config.tags).length > 0) {
+            lines.push(self.collectDevice(deviceId));
+        }
     });
     
     if (global.ZWave) {

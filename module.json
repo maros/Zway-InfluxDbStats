@@ -16,17 +16,9 @@
             "label" : "__database_label__",
             "order": 2
          },
-         "devices" : {
-            "fields" : {
-               "item" : {
-                  "datasource" : "namespaces",
-                  "field" : "optionLabels",
-                  "optionLabels" : "namespaces:devices_sensorMultilevel:deviceName,namespaces:devices_sensorBinary:deviceName,namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName",
-                  "type" : "select"
-               }
-            },
-            "helper" : "__devices_helper__",
-            "label" : "__devices_label__",
+         "tags" : {
+            "helper" : "__tags_helper__",
+            "label" : "__tags_label__",
             "order": 5
          },
          "interval" : {
@@ -58,12 +50,10 @@
          "database" : {
             "required" : true
          },
-         "devices" : {
+         "tags" : {
             "items" : {
-               "datasource" : "namespaces",
-               "enum" : "namespaces:devices_sensorMultilevel:deviceId,namespaces:devices_sensorBinary:deviceId,namespaces:devices_switchBinary:deviceId,namespaces:devices_switchMultilevel:deviceId",
-               "field" : "enum",
-               "required" : true
+                "type": "string",
+                "required" : true
             },
             "uniqueItems": true,
             "type" : "array"
