@@ -97,7 +97,7 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 };
 
 
-InfluxDbStats.prototype.collectDevice = function (deviceId) {
+InfluxDbStats.prototype.collectVirtualDevice = function (deviceId) {
     var self    = this;
     var deviceObject  = self.controller.devices.get(deviceId);
     
@@ -124,6 +124,25 @@ InfluxDbStats.prototype.collectDevice = function (deviceId) {
         ' level=' + self.escapeValue(level);
 };
 
+InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
+    var self    = this;
+    if (typeof(device) === 'undefined') {
+        return;
+    }
+    
+    var deviceData  = device.data;
+    var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
+    
+    return 'zwave.' + self.escapeValue(deviceIndex) +
+        ',title=' + self.escapeValue(deviceData.givenName.value) +
+        ',type=' + self.escapeValue(deviceData.basicType.value) +
+        ' failed=' + self.escapeValue(deviceData.countFailed.value) +
+        ',failure=' + self.escapeValue(deviceData.failureCount.value) +
+        ',success=' + self.escapeValue(deviceData.countSuccess.value) +
+        ',queue=' + self.escapeValue(deviceData.queueLength.value) +
+        (typeof(batteryData) !== 'undefined' ? ',battery=' + self.escapeValue(batteryData.data.last.value) : '');
+};
+
 InfluxDbStats.prototype.updateAll = function () {
     var self = this;
     
@@ -133,7 +152,7 @@ InfluxDbStats.prototype.updateAll = function () {
     self.controller.devices.each(function(vDev) {
         var tags = vDev.get('tags');
         if (_.intersection(tags, self.config.tags).length > 0) {
-            lines.push(self.collectDevice(deviceId));
+            lines.push(self.collectVirtualDevice(deviceId));
         }
     });
     
@@ -142,20 +161,8 @@ InfluxDbStats.prototype.updateAll = function () {
             var zway = global.ZWave && global.ZWave[zwayName].zway;
             if (zway) {
                 for(var deviceIndex in zway.devices) {
-                    var device = zway.devices[deviceIndex];
-                    if (typeof(device) !== 'undefined' && deviceIndex !== 1) {
-                        var deviceData  = device.data;
-                        var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
-                        lines.push(
-                            'zwave.' + self.escapeValue(deviceIndex) +
-                            ',title=' + self.escapeValue(deviceData.givenName.value) +
-                            ',type=' + self.escapeValue(deviceData.basicType.value) +
-                            ' failed=' + self.escapeValue(deviceData.countFailed.value) +
-                            ',failure=' + self.escapeValue(deviceData.failureCount.value) +
-                            ',success=' + self.escapeValue(deviceData.countSuccess.value) +
-                            ',queue=' + self.escapeValue(deviceData.queueLength.value) +
-                            (typeof(batteryData) !== 'undefined' ? ',battery=' + self.escapeValue(batteryData.data.last.value) : '')
-                        );
+                    if (deviceIndex !== 1) {
+                        lines.push(self.collectZwaveDevice(deviceIndex,zway.devices[deviceIndex]));
                     }
                 }
             }
