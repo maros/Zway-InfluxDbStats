@@ -1,15 +1,14 @@
 {
    "database_label" : "Database name",
    "description" : "Store sensor data in InfluxDB instances ",
-   "devices_helper" : "List of devices to be collected",
-   "devices_label" : "Devices",
-   "password_label" : "Database password",
-   "title" : "Collect stats via InfluxDb",
-   "server_label" : "Database Server URL",
-   "server_helper" : "The final url used for writing will be $URL:8086/write",
-   "database_label" : "Database name",
-   "username_label" : "Database username",
-   "interval_label" : "Update interval",
+   "error" : "Could not post influxdb statistics. Please check logfiles for details",
    "interval_helper" : "Sets the interval (in minutes) for statistics updates. If left empty, then the statistics will only be updates if values change (not recommended).",
-   "error" : "Could not post influxdb statistics. Please check logfiles for details"
+   "interval_label" : "Update interval",
+   "password_label" : "Database password",
+   "server_helper" : "The final url used for writing will be $URL:8086/write",
+   "server_label" : "Database Server URL",
+   "tags_helper" : "All devices tagged with this label will be handled by this app ",
+   "tags_label" : "Tags",
+   "title" : "Collect stats via InfluxDb",
+   "username_label" : "Database username"
 }
