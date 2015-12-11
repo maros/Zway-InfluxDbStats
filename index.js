@@ -55,8 +55,10 @@ InfluxDbStats.prototype.init = function (config) {
         self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
     
-    setTimeout(_.bind(self.updateAll,self),30 * 1000);
-    //self.updateCalculation();
+    self.handleUpdate = _.bind(self.updateDevice,self);
+    self.controller.devices.on("change:metrics:level",self.handleUpdate);
+    
+    setTimeout(_.bind(self.initCallback,self),30 * 1000);
 };
 
 InfluxDbStats.prototype.stop = function () {
@@ -67,6 +69,10 @@ InfluxDbStats.prototype.stop = function () {
         clearInterval(self.interval);
     }
     
+    // Remove listener
+    self.controller.devices.off("change:metrics:level",self.handleUpdate);
+    self.handleUpdate = undefined;
+    
     InfluxDbStats.super_.prototype.stop.call(this);
 };
 
@@ -74,14 +80,16 @@ InfluxDbStats.prototype.stop = function () {
 // --- Module methods
 // ----------------------------------------------------------------------------
 
-InfluxDbStats.prototype.updateDevice = function (deviceId) {
+InfluxDbStats.prototype.updateDevice = function (vDev) {
     var self = this;
     
-    // TODO;Ensure that not called too often
-    var lines = [
-        self.collectDevice(deviceId)
-    ];
-    self.sendStats(lines);
+    if (_.intersection(vDev.get('tags'), self.config.tags).length > 0) {
+        // TODO;Ensure that not called too often
+        var lines = [
+            self.collectDevice(vDev.id)
+        ];
+        self.sendStats(lines);
+    }
 };
 
 InfluxDbStats.prototype.escapeValue = function (value) {
@@ -171,7 +179,6 @@ InfluxDbStats.prototype.updateAll = function () {
     
     self.sendStats(lines);
 };
-
 
 InfluxDbStats.prototype.sendStats = function (lines) {
     var self = this;
