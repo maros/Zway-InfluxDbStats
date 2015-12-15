@@ -57,8 +57,6 @@ InfluxDbStats.prototype.init = function (config) {
     
     self.handleUpdate = _.bind(self.updateDevice,self);
     self.controller.devices.on("change:metrics:level",self.handleUpdate);
-    
-    setTimeout(_.bind(self.initCallback,self),30 * 1000);
 };
 
 InfluxDbStats.prototype.stop = function () {
