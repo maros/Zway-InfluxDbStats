@@ -86,7 +86,7 @@ InfluxDbStats.prototype.updateDevice = function (vDev) {
         var lines = [
             self.collectDevice(vDev.id)
         ];
-        setTimeout(_.bind(self.sendStats,self,lines),0);
+        setTimeout(_.bind(self.sendStats,self,lines),1);
     }
 };
 
