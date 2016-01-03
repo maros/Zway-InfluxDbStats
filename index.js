@@ -188,17 +188,15 @@ InfluxDbStats.prototype.sendStats = function (lines) {
     if (lines.length === 0) {
         return;
     }
-    var data = lines.join("\n");
     
-    http.request({
-        url:    self.url,
-        async:  true,
-        method: 'POST',
-        data:   data,
-        error:  function(response) {
-            console.error('[InfluxDb] Could not post stats');
-            console.logJS(response);
-            
+    var request = {
+        url:        self.url,
+        method:     'POST',
+        async:      true,
+        data:       lines.join("\n"),
+        error:      function(response) {
+            self.error('Could not post stats: '+response.statusText);
+            self.log(self.url);
             self.controller.addNotification(
                 "error", 
                 self.langFile.error,
@@ -206,5 +204,16 @@ InfluxDbStats.prototype.sendStats = function (lines) {
                 "InfluxDbStats"
             );
         }
-    });
+    };
+    /*
+    if (typeof(self.config.username) !== 'undefined'
+        && typeof(self.config.password) !== 'undefined') {
+        request.auth = {
+            login:      self.config.username,
+            password:   self.config.password
+        };
+    }
+    */
+    
+    http.request(request);
 };
