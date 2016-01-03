@@ -3,10 +3,11 @@
    "category" : "logging",
    "defaults" : {
       "description" : "__description__",
-      "title" : "__title__"
+      "title" : "__title__",
+      "port": 8086
    },
-   "dependencies" : [],
-   "homepage" : "http://k-1.com",
+   "dependencies" : ["BaseModule"],
+   "homepage" : "https://github.com/maros/Zway-InfluxDbStats/",
    "icon" : "icon.png",
    "maturity" : "stable",
    "moduleName" : "InfluxDbStats",
@@ -14,30 +15,34 @@
       "fields" : {
          "database" : {
             "label" : "__database_label__",
-            "order": 2
+            "order": 3
          },
          "tags" : {
             "helper" : "__tags_helper__",
             "label" : "__tags_label__",
-            "order": 5
+            "order": 6
          },
          "interval" : {
             "helper" : "__interval_helper__",
             "label" : "__interval_label__",
-            "order": 6
+            "order": 7
          },
          "password" : {
             "label" : "__password_label__",
-            "order": 4
+            "order": 5
          },
          "server" : {
             "helper" : "__server_helper__",
             "label" : "__server_label__",
             "order": 1
          },
+         "port" : {
+             "label" : "__port_label__",
+             "order": 2
+          },
          "username" : {
             "label" : "__username_label__",
-            "order": 3
+            "order": 4
          }
       }
    },
@@ -65,6 +70,10 @@
          "server" : {
             "required" : true
          },
+         "port" : {
+             "required" : true,
+             "type": "number"
+          },
          "username" : {}
       },
       "required" : true,

@@ -35,10 +35,10 @@ InfluxDbStats.prototype.init = function (config) {
     InfluxDbStats.super_.prototype.init.call(this, config);
     var self = this;
     
-    self.langFile   = self.controller.loadModuleLang("InfluxDbStats");
-    
     self.url = self.config.server
-        + ':8086/write'
+        + ':'
+        + self.config.port
+        + '/write'
         + '?db='
         + encodeURIComponent(self.config.database);
     
