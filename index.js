@@ -23,7 +23,7 @@ function InfluxDbStats (id, controller) {
     this.commandClass   = 0x80;
 }
 
-inherits(InfluxDbStats, AutomationModule);
+inherits(InfluxDbStats, BaseModule);
 
 _module = InfluxDbStats;
 
@@ -51,12 +51,12 @@ InfluxDbStats.prototype.init = function (config) {
     
     if (typeof(self.config.interval) !== 'undefined') {
         var interval = parseInt(self.config.interval,10) * 60 * 1000;
-        console.log('[InfluxDb]'+self.url+' - '+interval);
         self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
     
     self.handleUpdate = _.bind(self.updateDevice,self);
-    self.controller.devices.on("change:metrics:level",self.handleUpdate);
+    // Bind on metrics:changeTime to get only real updates
+    self.controller.devices.on("change:metrics:changeTime",self.handleUpdate);
 };
 
 InfluxDbStats.prototype.stop = function () {
@@ -81,10 +81,15 @@ InfluxDbStats.prototype.stop = function () {
 InfluxDbStats.prototype.updateDevice = function (vDev) {
     var self = this;
     
+    if (typeof(vDev) === 'undefined') {
+        self.error('Invalid event');
+        return;
+    }
+    
     if (_.intersection(vDev.get('tags'), self.config.tags).length > 0) {
-        // TODO;Ensure that not called too often
+        self.log('Update device '+vDev.id);
         var lines = [
-            self.collectDevice(vDev.id)
+            self.collectVirtualDevice(vDev)
         ];
         setTimeout(_.bind(self.sendStats,self,lines),1);
     }
@@ -103,17 +108,16 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 };
 
 
-InfluxDbStats.prototype.collectVirtualDevice = function (deviceId) {
+InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
     var self    = this;
-    var deviceObject  = self.controller.devices.get(deviceId);
     
-    var level       = deviceObject.get('metrics:level');
-    var scale       = deviceObject.get('metrics:scaleTitle');
-    var probe       = deviceObject.get('metrics:probeTitle') || deviceObject.get('probeType');
-    var title       = deviceObject.get('metrics:title');
-    var location    = parseInt(deviceObject.get('location'),10);
-    var type        = deviceObject.get('deviceType');
-    var room        = _.find(
+    var level           = deviceObject.get('metrics:level');
+    var scale           = deviceObject.get('metrics:scaleTitle');
+    var probe           = deviceObject.get('metrics:probeTitle') || deviceObject.get('probeType');
+    var title           = deviceObject.get('metrics:title');
+    var location        = parseInt(deviceObject.get('location'),10);
+    var type            = deviceObject.get('deviceType');
+    var room            = _.find(
         self.controller.locations, 
         function(item){ return (item.id === location); }
     );
@@ -121,7 +125,7 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceId) {
         room = room.title;
     }
     
-    return 'device.' + self.escapeValue(deviceId) +
+    return 'device.' + self.escapeValue(deviceObject.id) +
         ',probe=' + self.escapeValue(probe) +
         ',room=' + self.escapeValue(room) +
         ',scale=' + self.escapeValue(scale) +
@@ -140,9 +144,9 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
     var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
     
     return 'zwave.' + self.escapeValue(deviceIndex) +
-        ',title=' + self.escapeValue(deviceData.givenName.value) +
+        ',title=' + self.escapeValue(deviceData.givenName.value) + // Tags
         ',type=' + self.escapeValue(deviceData.basicType.value) +
-        ' failed=' + self.escapeValue(deviceData.countFailed.value) +
+        ' failed=' + self.escapeValue(deviceData.countFailed.value) + // Values
         ',failure=' + self.escapeValue(deviceData.failureCount.value) +
         ',success=' + self.escapeValue(deviceData.countSuccess.value) +
         ',queue=' + self.escapeValue(deviceData.queueLength.value) +
@@ -152,13 +156,13 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
 InfluxDbStats.prototype.updateAll = function () {
     var self = this;
     
-    console.log('[InfluxDB] Update all');
+    self.log('Update all');
     var lines = [];
     
     self.controller.devices.each(function(vDev) {
         var tags = vDev.get('tags');
         if (_.intersection(tags, self.config.tags).length > 0) {
-            lines.push(self.collectVirtualDevice(deviceId));
+            lines.push(self.collectVirtualDevice(vDev));
         }
     });
     
