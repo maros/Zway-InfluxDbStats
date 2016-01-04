@@ -120,10 +120,18 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
     var title           = deviceObject.get('metrics:title');
     var location        = parseInt(deviceObject.get('location'),10);
     var type            = deviceObject.get('deviceType');
+    
+    if (type === 'sensorBinary' || type === 'switchBinary') {
+        if (level === 'on') level = 1;
+        else if (level === 'off') level = 0;
+        else self.error('Cannot parse probe level');
+    }
+    
     var room            = _.find(
         self.controller.locations, 
         function(item){ return (item.id === location); }
     );
+    
     if (typeof(room) === 'object') {
         room = room.title;
     }
