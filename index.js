@@ -104,6 +104,7 @@ InfluxDbStats.prototype.escapeValue = function (value) {
         case 'number':
             return value;
         case 'string':
+            if (value === '') return 'none';
             return value.replace(/(,|\s+)/g, '\\$1');
     }
     return 'null';
