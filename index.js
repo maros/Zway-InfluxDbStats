@@ -87,11 +87,13 @@ InfluxDbStats.prototype.updateDevice = function (vDev) {
     }
     
     if (_.intersection(vDev.get('tags'), self.config.tags).length > 0) {
-        self.log('Update device '+vDev.id);
-        var lines = [
-            self.collectVirtualDevice(vDev)
-        ];
-        setTimeout(_.bind(self.sendStats,self,lines),1);
+        setTimeout(function() {
+            self.log('Update device '+vDev.id);
+            var lines = [
+                self.collectVirtualDevice(vDev)
+            ];
+            self.sendStats(lines);
+        },1);
     }
 };
 
