@@ -55,8 +55,8 @@ InfluxDbStats.prototype.init = function (config) {
     }
     
     self.handleUpdate = _.bind(self.updateDevice,self);
-    // Bind on metrics:changeTime to get only real updates
-    self.controller.devices.on("change:metrics:changeTime",self.handleUpdate);
+    // get only real changes
+    self.controller.devices.on("modify:metrics:level",self.handleUpdate);
 };
 
 InfluxDbStats.prototype.stop = function () {
@@ -68,7 +68,7 @@ InfluxDbStats.prototype.stop = function () {
     }
     
     // Remove listener
-    self.controller.devices.off("change:metrics:level",self.handleUpdate);
+    self.controller.devices.off("modify:metrics:level",self.handleUpdate);
     self.handleUpdate = undefined;
     
     InfluxDbStats.super_.prototype.stop.call(this);
