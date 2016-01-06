@@ -47,7 +47,10 @@ No events are emitted
 
 # Installation
 
-You will need access to a working InfluxDB instance.
+Install the BaseModule from https://github.com/maros/Zway-BaseModule first.
+You will also need access to a working InfluxDB instance. See 
+https://influxdata.com/get-started/download-and-install-influxdb/ for
+installation instructions.
 
 ```shell
 cd /opt/z-way-server/automation/modules
@@ -56,7 +59,7 @@ git clone https://github.com/maros/Zway-InfluxDbStats.git InfluxDbStats --branch
 
 To update or install a specific version
 ```shell
-cd /opt/z-way-server/automation/modules/DeviceMove
+cd /opt/z-way-server/automation/modules/InfluxDbStats
 git fetch --tags
 # For latest released version
 git checkout tags/latest
