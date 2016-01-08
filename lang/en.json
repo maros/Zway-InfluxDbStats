@@ -1,6 +1,6 @@
 {
    "database_label" : "Database name",
-   "description" : "Store sensor data in InfluxDB instances ",
+   "m_descr" : "Store sensor data in InfluxDB instances ",
    "error" : "Could not post influxdb statistics. Please check logfiles for details",
    "interval_helper" : "Sets the interval (in minutes) for statistics updates. If left empty, then the statistics will only be updates if values change (not recommended).",
    "interval_label" : "Update interval",
@@ -10,6 +10,6 @@
    "server_label" : "Database Server URL",
    "tags_helper" : "All devices tagged with this label will be handled by this app ",
    "tags_label" : "Tags",
-   "title" : "Collect stats via InfluxDb",
+   "m_title" : "Collect stats via InfluxDb",
    "username_label" : "Database username"
 }

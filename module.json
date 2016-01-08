@@ -2,8 +2,8 @@
    "author" : "Maroš Kollár",
    "category" : "logging",
    "defaults" : {
-      "description" : "__description__",
-      "title" : "__title__",
+      "description" : "__m_descr__",
+      "title" : "__m_title__",
       "port": 8086
    },
    "dependencies" : ["BaseModule"],
