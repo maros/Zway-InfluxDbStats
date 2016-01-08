@@ -1,0 +1,15 @@
+1.02 2016 Jan 08, Fri
+    * Rename title/description key to make module work in appstore
+    * Parse on/off level
+    * Prevent empty tags
+    * Cleanup http request generation
+    * Submit stats only if level has really changed
+    * Separate port settings
+    * Translate
+    * Handle via tags
+    * Collect zway stats
+    * Cleanup jshint issues
+    * Unify variable names
+    * Fix behaviour on missing devices
+    * Add unique constraint and field order
+

@@ -3,10 +3,12 @@
    "category" : "logging",
    "defaults" : {
       "description" : "__m_descr__",
-      "title" : "__m_title__",
-      "port": 8086
+      "port" : 8086,
+      "title" : "__m_title__"
    },
-   "dependencies" : ["BaseModule"],
+   "dependencies" : [
+      "BaseModule"
+   ],
    "homepage" : "https://github.com/maros/Zway-InfluxDbStats/",
    "icon" : "icon.png",
    "maturity" : "stable",
@@ -15,34 +17,34 @@
       "fields" : {
          "database" : {
             "label" : "__database_label__",
-            "order": 3
-         },
-         "tags" : {
-            "helper" : "__tags_helper__",
-            "label" : "__tags_label__",
-            "order": 6
+            "order" : 3
          },
          "interval" : {
             "helper" : "__interval_helper__",
             "label" : "__interval_label__",
-            "order": 7
+            "order" : 7
          },
          "password" : {
             "label" : "__password_label__",
-            "order": 5
+            "order" : 5
+         },
+         "port" : {
+            "label" : "__port_label__",
+            "order" : 2
          },
          "server" : {
             "helper" : "__server_helper__",
             "label" : "__server_label__",
-            "order": 1
+            "order" : 1
          },
-         "port" : {
-             "label" : "__port_label__",
-             "order": 2
-          },
+         "tags" : {
+            "helper" : "__tags_helper__",
+            "label" : "__tags_label__",
+            "order" : 6
+         },
          "username" : {
             "label" : "__username_label__",
-            "order": 4
+            "order" : 4
          }
       }
    },
@@ -55,30 +57,30 @@
          "database" : {
             "required" : true
          },
-         "tags" : {
-            "items" : {
-                "type": "string",
-                "required" : true
-            },
-            "uniqueItems": true,
-            "type" : "array"
-         },
          "interval" : {
             "type" : "number"
          },
          "password" : {},
+         "port" : {
+            "required" : true,
+            "type" : "number"
+         },
          "server" : {
             "required" : true
          },
-         "port" : {
-             "required" : true,
-             "type": "number"
-          },
+         "tags" : {
+            "items" : {
+               "required" : true,
+               "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+         },
          "username" : {}
       },
       "required" : true,
       "type" : "object"
    },
    "singleton" : true,
-   "version" : "1.01"
+   "version" : 1.02
 }
