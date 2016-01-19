@@ -1,15 +1,15 @@
 {
    "database_label" : "Datenbank Name",
-   "m_descr" : "Speichert Statistiken über Messwerte und Zwave Netzwerke in InfluxDB Instanzen.",
    "error" : "Fehler beim Senden von Statistiken an InfluxDB.",
    "interval_helper" : "Spezifiziert das Aktualisierungs Interval in Minuten in dem alle Statistiken an InfluxDB geschickt werden. Wenn dieser Wert leer ist, dann werden die Device Statistiken nur geschickt wenn sich Werte ändern. (Nicht empfohlen).",
    "interval_label" : "Aktualisierungs Interval",
+   "m_descr" : "Speichert Statistiken über Messwerte und Zwave Netzwerke in InfluxDB Instanzen.\nSiehe https://github.com/maros/Zway-InfluxDbStats//blob/master/README.md für detailliertere Dokumentation.",
+   "m_title" : "Sammelt Statistiken via InfluxDb",
    "password_label" : "Database Passwort",
-   "port_label": "Database Server Port",
+   "port_label" : "Database Server Port",
    "server_helper" : "Die tatsächliche benutzte URL wird im Frotmat $URL:$PORT/write sein. Das Protokoll (zB. https:// ) muss angegeben werden",
    "server_label" : "Database Server URL",
    "tags_helper" : "Alle Module mit diesen Tags werden erfasst und an InfluxDb geschickt. ",
    "tags_label" : "Tags",
-   "m_title" : "Sammelt Statistiken via InfluxDb",
    "username_label" : "Datenbank Benutzername"
 }
