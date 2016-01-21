@@ -3,7 +3,7 @@
    "error" : "Fehler beim Senden von Statistiken an InfluxDB.",
    "interval_helper" : "Spezifiziert das Aktualisierungs Interval in Minuten in dem alle Statistiken an InfluxDB geschickt werden. Wenn dieser Wert leer ist, dann werden die Device Statistiken nur geschickt wenn sich Werte ändern. (Nicht empfohlen).",
    "interval_label" : "Aktualisierungs Interval",
-   "m_descr" : "Speichert Statistiken über Messwerte und Zwave Netzwerke in InfluxDB Instanzen.<br>Siehe  <a href=\"https://github.com/maros/Zway-InfluxDbStats/blob/master/README.md\">github.com/maros/Zway-InfluxDbStats</a> für detailliertere Dokumentation.",
+   "m_descr" : "Speichert Statistiken über Messwerte und Zwave Netzwerke in InfluxDB Instanzen.<br>Siehe <a href=https://github.com/maros/Zway-InfluxDbStats/blob/master/README.md>github.com/maros/Zway-InfluxDbStats</a> für detailliertere Dokumentation.",
    "m_title" : "Sammelt Statistiken via InfluxDb",
    "password_label" : "Database Passwort",
    "port_label" : "Database Server Port",
