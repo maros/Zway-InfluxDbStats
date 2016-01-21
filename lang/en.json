@@ -3,7 +3,7 @@
    "error" : "Could not post influxdb statistics. Please check logfiles for details",
    "interval_helper" : "Sets the interval (in minutes) for statistics updates. If left empty, then the statistics will only be updates if values change (not recommended).",
    "interval_label" : "Update interval",
-   "m_descr" : "Store sensor data in InfluxDB instances \nCheck https://github.com/maros/Zway-InfluxDbStats//blob/master/README.md for detailed documentation.",
+   "m_descr" : "Store sensor data in InfluxDB instances <br>Check  <a href=\"https://github.com/maros/Zway-InfluxDbStats/blob/master/README.md\">github.com/maros/Zway-InfluxDbStats</a> for detailed documentation.",
    "m_title" : "Collect stats via InfluxDb",
    "password_label" : "Database password",
    "port_label" : "Database Server Port",
