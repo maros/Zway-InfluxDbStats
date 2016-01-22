@@ -1,3 +1,8 @@
+1.03 2016 Jan 22, Fri
+    * Improve description
+    * Add doc link
+    * German translation
+
 1.02 2016 Jan 08, Fri
     * Rename title/description key to make module work in appstore
     * Parse on/off level
