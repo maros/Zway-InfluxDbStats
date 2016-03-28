@@ -197,6 +197,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
     var self = this;
     
     if (lines.length === 0) {
+        self.error("Empty stats. Ignoring");
         return;
     }
     
@@ -206,8 +207,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         async:      true,
         data:       lines.join("\n"),
         error:      function(response) {
-            self.error('Could not post stats: '+response.statusText);
-            self.log(self.url);
+            self.error("Could not post stats: " + response.statusText + "\nPOST " + self.url + "\nBody: " + lines.join("\n") + "\nResponse: " + response.data);
             self.controller.addNotification(
                 "error", 
                 self.langFile.error,
