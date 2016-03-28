@@ -116,7 +116,7 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
     
     var level           = deviceObject.get('metrics:level');
     var scale           = deviceObject.get('metrics:scaleTitle');
-    var probe           = deviceObject.get('probeType');
+    var probe           = deviceObject.get('probeType') || deviceObject.get('probeTitle');
     var title           = deviceObject.get('metrics:title');
     var location        = parseInt(deviceObject.get('location'),10);
     var type            = deviceObject.get('deviceType');
