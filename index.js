@@ -86,7 +86,8 @@ InfluxDbStats.prototype.updateDevice = function (vDev) {
         return;
     }
     
-    if (_.intersection(vDev.get('tags'), self.config.tags).length > 0) {
+    if (_.intersection(vDev.get('tags'), self.config.tags).length > 0
+        && _.intersection(vDev.get('tags'), self.config.excludeTags).length === 0) {
         setTimeout(function() {
             self.log('Update device '+vDev.id);
             var lines = [
@@ -172,7 +173,8 @@ InfluxDbStats.prototype.updateAll = function () {
     
     self.controller.devices.each(function(vDev) {
         var tags = vDev.get('tags');
-        if (_.intersection(tags, self.config.tags).length > 0) {
+        if (_.intersection(tags, self.config.tags).length > 0
+            && _.intersection(tags, self.config.excludeTags).length === 0) {
             lines.push(self.collectVirtualDevice(vDev));
         }
     });
