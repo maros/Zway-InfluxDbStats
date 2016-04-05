@@ -1,6 +1,8 @@
 {
    "database_label" : "Datenbank Name",
    "error" : "Fehler beim Senden von Statistiken an InfluxDB.",
+   "exclude_tags_helper" : "Alle Module mit diesen Tags werden nicht an InfluxDb geschickt, auch wenn andere Tags übereinstimmen.",
+   "exclude_tags_label" : "Ausschließende Tags",
    "interval_helper" : "Spezifiziert das Aktualisierungs Interval in Minuten in dem alle Statistiken an InfluxDB geschickt werden. Wenn dieser Wert leer ist, dann werden die Device Statistiken nur geschickt wenn sich Werte ändern. (Nicht empfohlen).",
    "interval_label" : "Aktualisierungs Interval",
    "m_descr" : "Speichert Sensoren Messwerte und Zwave Netzwerke Statistiken in InfluxDB Instanzen. InfluxDB ist eine Zeitserien Datenbank die Zeit Messwerte speichern und auswerten kann. Um dieses Modul zu betreiben benötigt man eine externe InfluxDB Installtion.<br>Siehe <a href=https://github.com/maros/Zway-InfluxDbStats/blob/master/README.md>github.com/maros/Zway-InfluxDbStats</a> für detailliertere Dokumentation.",
@@ -9,7 +11,7 @@
    "port_label" : "Database Server Port",
    "server_helper" : "Die tatsächliche benutzte URL wird im Frotmat $URL:$PORT/write sein. Das Protokoll (zB. https:// ) muss angegeben werden",
    "server_label" : "Database Server URL",
-   "tags_helper" : "Alle Module mit diesen Tags werden erfasst und an InfluxDb geschickt. ",
+   "tags_helper" : "Alle Module mit diesen Tags werden erfasst und an InfluxDb geschickt.",
    "tags_label" : "Tags",
    "username_label" : "Datenbank Benutzername"
 }
