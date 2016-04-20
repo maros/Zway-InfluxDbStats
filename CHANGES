@@ -1,3 +1,10 @@
+1.04 2016 Apr 20, Wed
+    * Exclude tags
+    * Better error messages
+    * Fallback for probeType
+    * Use probeType
+    * Update installation howto
+
 1.03 2016 Jan 22, Fri
     * Improve description
     * Add doc link
