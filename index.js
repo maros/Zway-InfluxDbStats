@@ -16,7 +16,7 @@ Description:
 function InfluxDbStats (id, controller) {
     // Call superconstructor first (AutomationModule)
     InfluxDbStats.super_.call(this, id, controller);
-    
+
     this.interval       = undefined;
     this.url            = undefined;
     this.langfile       = undefined;
@@ -34,26 +34,26 @@ _module = InfluxDbStats;
 InfluxDbStats.prototype.init = function (config) {
     InfluxDbStats.super_.prototype.init.call(this, config);
     var self = this;
-    
+
     self.url = self.config.server
         + ':'
         + self.config.port
         + '/write'
         + '?db='
         + encodeURIComponent(self.config.database);
-    
+
     if (typeof(self.config.username) !== 'undefined') {
         self.url = self.url + '&u=' + encodeURIComponent(self.config.username);
     }
     if (typeof(self.config.password) !== 'undefined') {
         self.url = self.url + '&p=' + encodeURIComponent(self.config.password);
     }
-    
+
     if (typeof(self.config.interval) !== 'undefined') {
         var interval = parseInt(self.config.interval,10) * 60 * 1000;
         self.interval = setInterval(_.bind(self.updateAll,self), interval);
     }
-    
+
     self.handleUpdate = _.bind(self.updateDevice,self);
     // get only real changes
     self.controller.devices.on("modify:metrics:level",self.handleUpdate);
@@ -61,16 +61,16 @@ InfluxDbStats.prototype.init = function (config) {
 
 InfluxDbStats.prototype.stop = function () {
     var self = this;
-    
+
     // Remove interval
     if (typeof(self.interval) !== 'undefined') {
         clearInterval(self.interval);
     }
-    
+
     // Remove listener
     self.controller.devices.off("modify:metrics:level",self.handleUpdate);
     self.handleUpdate = undefined;
-    
+
     InfluxDbStats.super_.prototype.stop.call(this);
 };
 
@@ -80,12 +80,12 @@ InfluxDbStats.prototype.stop = function () {
 
 InfluxDbStats.prototype.updateDevice = function (vDev) {
     var self = this;
-    
+
     if (typeof(vDev) === 'undefined') {
         self.error('Invalid event');
         return;
     }
-    
+
     if (_.intersection(vDev.get('tags'), self.config.tags).length > 0
         && _.intersection(vDev.get('tags'), self.config.excludeTags).length === 0) {
         setTimeout(function() {
@@ -100,7 +100,7 @@ InfluxDbStats.prototype.updateDevice = function (vDev) {
 
 InfluxDbStats.prototype.escapeValue = function (value) {
     var self = this;
-    
+
     switch(typeof(value)) {
         case 'number':
             return value;
@@ -114,29 +114,29 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 
 InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
     var self    = this;
-    
+
     var level           = deviceObject.get('metrics:level');
     var scale           = deviceObject.get('metrics:scaleTitle');
     var probe           = deviceObject.get('probeType') || deviceObject.get('probeTitle');
     var title           = deviceObject.get('metrics:title');
     var location        = parseInt(deviceObject.get('location'),10);
     var type            = deviceObject.get('deviceType');
-    
+
     if (type === 'sensorBinary' || type === 'switchBinary') {
         if (level === 'on') level = 1;
         else if (level === 'off') level = 0;
         else self.error('Cannot parse probe level');
     }
-    
+
     var room            = _.find(
-        self.controller.locations, 
+        self.controller.locations,
         function(item){ return (item.id === location); }
     );
-    
+
     if (typeof(room) === 'object') {
         room = room.title;
     }
-    
+
     return 'device.' + self.escapeValue(deviceObject.id) +
         ',probe=' + self.escapeValue(probe) +
         ',room=' + self.escapeValue(room) +
@@ -151,10 +151,10 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
     if (typeof(device) === 'undefined') {
         return;
     }
-    
+
     var deviceData  = device.data;
     var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
-    
+
     return 'zwave.' + self.escapeValue(deviceIndex) +
         ',title=' + self.escapeValue(deviceData.givenName.value) + // Tags
         ',type=' + self.escapeValue(deviceData.basicType.value) +
@@ -167,10 +167,10 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
 
 InfluxDbStats.prototype.updateAll = function () {
     var self = this;
-    
+
     self.log('Update all');
     var lines = [];
-    
+
     self.controller.devices.each(function(vDev) {
         var tags = vDev.get('tags');
         if (_.intersection(tags, self.config.tags).length > 0
@@ -178,7 +178,7 @@ InfluxDbStats.prototype.updateAll = function () {
             lines.push(self.collectVirtualDevice(vDev));
         }
     });
-    
+
     if (global.ZWave) {
         for (var zwayName in global.ZWave) {
             var zway = global.ZWave && global.ZWave[zwayName].zway;
@@ -191,18 +191,18 @@ InfluxDbStats.prototype.updateAll = function () {
             }
         }
     }
-    
+
     self.sendStats(lines);
 };
 
 InfluxDbStats.prototype.sendStats = function (lines) {
     var self = this;
-    
+
     if (lines.length === 0) {
         self.error("Empty stats. Ignoring");
         return;
     }
-    
+
     var request = {
         url:        self.url,
         method:     'POST',
@@ -211,9 +211,9 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         error:      function(response) {
             self.error("Could not post stats: " + response.statusText + "\nPOST " + self.url + "\nBody: " + lines.join("\n") + "\nResponse: " + response.data);
             self.controller.addNotification(
-                "error", 
+                "error",
                 self.langFile.error,
-                "module", 
+                "module",
                 "InfluxDbStats"
             );
         }
@@ -227,6 +227,6 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         };
     }
     */
-    
+
     http.request(request);
 };
