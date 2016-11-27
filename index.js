@@ -156,13 +156,25 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
     var batteryData = device.instances[0].commandClasses[self.commandClass.toString()];
 
     return 'zwave.' + self.escapeValue(deviceIndex) +
-        ',title=' + self.escapeValue(deviceData.givenName.value) + // Tags
-        ',type=' + self.escapeValue(deviceData.basicType.value) +
-        ' failed=' + self.escapeValue(deviceData.countFailed.value) + // Values
-        ',failure=' + self.escapeValue(deviceData.failureCount.value) +
-        ',success=' + self.escapeValue(deviceData.countSuccess.value) +
-        ',queue=' + self.escapeValue(deviceData.queueLength.value) +
+        ',title=' + self.getValue(deviceData.givenName,'no-title') + // Tags
+        ',type=' + self.getValue(deviceData.basicType,'unknown') +
+        ' failed=' + self.getValue(deviceData.countFailed) + // Values
+        ',failure=' + self.getValue(deviceData.failureCount) +
+        ',success=' + self.getValue(deviceData.countSuccess) +
+        ',queue=' + self.getValue(deviceData.queueLength) +
         (typeof(batteryData) !== 'undefined' ? ',battery=' + self.escapeValue(batteryData.data.last.value) : '');
+};
+
+InfluxDbStats.prototype.getValue = function (object,fallback) {
+    if (typeof(object) !== 'undefined'
+        && typeof(object.value) !== 'undefined') {
+        return self.escapeValue(object.value);
+    }
+    if (typeof(fallback) === 'undefined') {
+        return 0;
+    } else {
+        return self.escapeValue(fallback);
+    }
 };
 
 InfluxDbStats.prototype.updateAll = function () {
@@ -185,6 +197,7 @@ InfluxDbStats.prototype.updateAll = function () {
             if (zway) {
                 for(var deviceIndex in zway.devices) {
                     if (deviceIndex !== 1) {
+                        self.log('Update '+zwayName+'.'+deviceIndex);
                         lines.push(self.collectZwaveDevice(deviceIndex,zway.devices[deviceIndex]));
                     }
                 }
