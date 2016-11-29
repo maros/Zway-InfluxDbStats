@@ -166,6 +166,7 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
 };
 
 InfluxDbStats.prototype.getValue = function (object,fallback) {
+    var self = this;
     if (typeof(object) !== 'undefined'
         && typeof(object.value) !== 'undefined') {
         return self.escapeValue(object.value);
