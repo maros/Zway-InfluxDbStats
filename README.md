@@ -6,7 +6,7 @@ periodically, as well as every time a change occurs.
 Since this module uses the new line protocol, it requires at least InfluxDb
 version 0.9.0.
 
-Data is stored under 'device.$DeviceID$', with only one measurement key 
+Data is stored under 'device.$DeviceID$', with only one measurement key
 called 'level' The following tags are also added:
 
 * probe: Probe title (eg. 'temperature')
@@ -48,16 +48,16 @@ No events are emitted
 # Installation
 
 Install the BaseModule from https://github.com/maros/Zway-BaseModule first.
-You will also need access to a working InfluxDB instance. See 
+You will also need access to a working InfluxDB instance. See
 https://influxdata.com/get-started/download-and-install-influxdb/ for
 installation instructions.
 
 The prefered way of installing this module is via the "Zwave.me App Store"
-available in 2.2.0 and higher. For stable module releases no access token is 
-required. If you want to test the latest pre-releases use 'k1_beta' as 
+available in 2.2.0 and higher. For stable module releases no access token is
+required. If you want to test the latest pre-releases use 'k1_beta' as
 app store access token.
 
-For developers and users of older Zway versions installation via git is 
+For developers and users of older Zway versions installation via git is
 recommended.
 
 ```shell
@@ -81,7 +81,7 @@ git checkout -b master --track origin/master
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or any 
+the Free Software Foundation, either version 3 of the License, or any
 later version.
 
 This program is distributed in the hope that it will be useful,
