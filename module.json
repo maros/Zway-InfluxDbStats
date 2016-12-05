@@ -4,8 +4,8 @@
    "defaults" : {
       "description" : "__m_descr__",
       "port" : 8086,
-      "title" : "__m_title__",
-      "tags": []
+      "tags" : [],
+      "title" : "__m_title__"
    },
    "dependencies" : [
       "BaseModule"
@@ -97,5 +97,5 @@
       "type" : "object"
    },
    "singleton" : true,
-   "version" : 1.04
+   "version" : "1.05"
 }

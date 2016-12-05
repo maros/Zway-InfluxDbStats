@@ -1,3 +1,9 @@
+1.05 2016 Dec 05, Mon
+    * Cleanup
+    * Fallback for undefined values
+    * Update docs and help
+    * Set defaults
+
 1.04 2016 Apr 20, Wed
     * Exclude tags
     * Better error messages
