@@ -1,7 +1,7 @@
 /*** InfluxDbStats Z-Way HA module *******************************************
 
-Version: 1.00
-(c) Maroš Kollár, 2015
+Version: 1.05
+(c) Maroš Kollár, 2015-2017
 -----------------------------------------------------------------------------
 Author: Maroš Kollár <maros@k-1.com>
 Description:
