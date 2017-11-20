@@ -139,6 +139,8 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
     if (typeof(room) === 'object') {
         room = room.title;
     }
+    room = room.replace(/(\s|[^A-Za-z0-9])/g, "_");
+    room = room.replace(/_+/g,"_");
 
     return 'device.' + self.escapeValue(deviceObject.id) +
         ',probe=' + self.escapeValue(probe) +
@@ -227,6 +229,7 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         data:       lines.join("\n"),
         error:      function(response) {
             self.error("Could not post stats: " + response.statusText + "\nPOST " + self.url + "\nBody: " + lines.join("\n") + "\nResponse: " + response.data);
+            console.logJS(response.data);
             self.controller.addNotification(
                 "error",
                 self.langFile.error,
