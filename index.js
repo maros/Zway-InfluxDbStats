@@ -131,7 +131,7 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
         else if (level === 'off') level = 0;
         else self.error('Cannot parse probe level');
     } else if (typeof(level) === 'string') {
-        level = paseFloat(level);
+        level = parseFloat(level);
     }
 
     if (typeof(level) === 'undefined' || isNaN(level)) {
