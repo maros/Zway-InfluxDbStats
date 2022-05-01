@@ -1,4 +1,4 @@
-# Zway-InfluxDbStats
+# Zway-InfluxDb2Stats
 
 Store sensor data in InfluxDB instances. Sensor and device data is transfered
 periodically, as well as every time a change occurs.

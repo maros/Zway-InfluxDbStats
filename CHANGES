@@ -1,3 +1,6 @@
+2.0b 2022 May 01, Sun
+    * Refactor for influxdb2
+    
 1.07 2019 Apr 26, Fri
     * New module icon
     * Tranform string to float
