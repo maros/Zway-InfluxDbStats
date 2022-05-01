@@ -1,17 +1,17 @@
 {
-   "database_label" : "Database name",
+   "bucket_label" : "Influxdb bucket",
    "error" : "Could not post InfluxDb statistics. Please check log files for details",
    "exclude_tags_helper" : "All devices tagged with this label will be excluded from statistics, even if other tags match",
    "exclude_tags_label" : "Exclude tags",
    "interval_helper" : "Sets the interval (in minutes) for statistics updates. If left empty, then the statistics will only be updated if values change (not recommended).",
    "interval_label" : "Update interval",
    "m_descr" : "Store sensor data and ZWave Network data in InfluxDB instances. InfluxDB is a time series database that can be used for storing and analyzing measurements and statistics over time. You need an external InfluxDB instance to operate this module. <br>Check <a href=https://github.com/maros/Zway-InfluxDbStats/blob/master/README.md>github.com/maros/Zway-InfluxDbStats</a> for detailed documentation.",
-   "m_title" : "InfluxDb Statistics Collector",
-   "password_label" : "Database password",
+   "m_title" : "InfluxDb2 Statistics Collector",
+   "token_label" : "Influxdb access token",
    "port_label" : "Database Server Port",
    "server_helper" : "The final URL used for writing will be $URL:$PORT/write. You have to include the protocol (ie. https:// )",
    "server_label" : "Database Server URL",
    "tags_helper" : "All devices tagged with this label will be handled by this module and sent to InfluxDB",
    "tags_label" : "Tags",
-   "username_label" : "Database username"
+   "organisation_label" : "Influxdb Organisation"
 }

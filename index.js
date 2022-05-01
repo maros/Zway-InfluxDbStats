@@ -1,4 +1,4 @@
-/*** InfluxDbStats Z-Way HA module *******************************************
+/*** InfluxDb2Stats Z-Way HA module *******************************************
 
 Version: 1.07
 (c) Maroš Kollár, 2015-2017
@@ -13,41 +13,36 @@ Description:
 // --- Class definition, inheritance and setup
 // ----------------------------------------------------------------------------
 
-function InfluxDbStats (id, controller) {
+function InfluxDb2Stats (id, controller) {
     // Call superconstructor first (AutomationModule)
-    InfluxDbStats.super_.call(this, id, controller);
+    InfluxDb2Stats.super_.call(this, id, controller);
 
     this.interval       = undefined;
     this.url            = undefined;
+    this.token          = '';
     this.langfile       = undefined;
     this.commandClass   = 0x80;
 }
 
-inherits(InfluxDbStats, BaseModule);
+inherits(InfluxDb2Stats, BaseModule);
 
-_module = InfluxDbStats;
+_module = InfluxDb2Stats;
 
 // ----------------------------------------------------------------------------
 // --- Module instance initialized
 // ----------------------------------------------------------------------------
 
-InfluxDbStats.prototype.init = function (config) {
-    InfluxDbStats.super_.prototype.init.call(this, config);
+InfluxDb2Stats.prototype.init = function (config) {
+    InfluxDb2Stats.super_.prototype.init.call(this, config);
     var self = this;
 
-    self.url = self.config.server
-        + ':'
-        + self.config.port
-        + '/write'
-        + '?db='
-        + encodeURIComponent(self.config.database);
+    self.url = self.config.server + ':' + self.config.port + 
+        '/api/v2/write' + 
+        '?org=' + encodeURIComponent(self.config.organisation) +
+        '&bucket=' + encodeURIComponent(self.config.bucket) +
+        '&precision=ns';
 
-    if (typeof(self.config.username) !== 'undefined') {
-        self.url = self.url + '&u=' + encodeURIComponent(self.config.username);
-    }
-    if (typeof(self.config.password) !== 'undefined') {
-        self.url = self.url + '&p=' + encodeURIComponent(self.config.password);
-    }
+    self.token = self.config.token;
 
     if (typeof(self.config.interval) !== 'undefined') {
         var interval = parseInt(self.config.interval,10) * 60 * 1000;
@@ -59,7 +54,7 @@ InfluxDbStats.prototype.init = function (config) {
     self.controller.devices.on("modify:metrics:level",self.handleUpdate);
 };
 
-InfluxDbStats.prototype.stop = function () {
+InfluxDb2Stats.prototype.stop = function () {
     var self = this;
 
     // Remove interval
@@ -71,14 +66,14 @@ InfluxDbStats.prototype.stop = function () {
     self.controller.devices.off("modify:metrics:level",self.handleUpdate);
     self.handleUpdate = undefined;
 
-    InfluxDbStats.super_.prototype.stop.call(this);
+    InfluxDb2Stats.super_.prototype.stop.call(this);
 };
 
 // ----------------------------------------------------------------------------
 // --- Module methods
 // ----------------------------------------------------------------------------
 
-InfluxDbStats.prototype.updateDevice = function (vDev) {
+InfluxDb2Stats.prototype.updateDevice = function (vDev) {
     var self = this;
 
     if (typeof(vDev) === 'undefined') {
@@ -98,7 +93,7 @@ InfluxDbStats.prototype.updateDevice = function (vDev) {
     }
 };
 
-InfluxDbStats.prototype.escapeValue = function (value) {
+InfluxDb2Stats.prototype.escapeValue = function (value) {
     var self = this;
 
     switch(typeof(value)) {
@@ -112,7 +107,7 @@ InfluxDbStats.prototype.escapeValue = function (value) {
 };
 
 
-InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
+InfluxDb2Stats.prototype.collectVirtualDevice = function (deviceObject) {
     var self    = this;
 
     var level           = deviceObject.get('metrics:level');
@@ -153,7 +148,7 @@ InfluxDbStats.prototype.collectVirtualDevice = function (deviceObject) {
         ' level=' + self.escapeValue(level);
 };
 
-InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
+InfluxDb2Stats.prototype.collectZwaveDevice = function (deviceIndex,device) {
     var self    = this;
     if (typeof(device) === 'undefined') {
         return;
@@ -172,7 +167,7 @@ InfluxDbStats.prototype.collectZwaveDevice = function (deviceIndex,device) {
         (typeof(batteryData) !== 'undefined' ? ',battery=' + self.escapeValue(batteryData.data.last.value) : '');
 };
 
-InfluxDbStats.prototype.getValue = function (object,fallback) {
+InfluxDb2Stats.prototype.getValue = function (object,fallback) {
     var self = this;
     if (typeof(object) !== 'undefined'
         && typeof(object.value) !== 'undefined') {
@@ -185,7 +180,7 @@ InfluxDbStats.prototype.getValue = function (object,fallback) {
     }
 };
 
-InfluxDbStats.prototype.updateAll = function () {
+InfluxDb2Stats.prototype.updateAll = function () {
     var self = this;
 
     self.log('Update all');
@@ -216,7 +211,7 @@ InfluxDbStats.prototype.updateAll = function () {
     self.sendStats(lines);
 };
 
-InfluxDbStats.prototype.sendStats = function (lines) {
+InfluxDb2Stats.prototype.sendStats = function (lines) {
     var self = this;
 
     if (lines.length === 0) {
@@ -229,6 +224,12 @@ InfluxDbStats.prototype.sendStats = function (lines) {
         method:     'POST',
         async:      true,
         data:       lines.join("\n"),
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Token ' +  self.config.token,
+            'Content-Type': 'text/plain; charset=utf-8',
+            'Content-Type':'application/json',
+        },
         error:      function(response) {
             self.error("Could not post stats: " + response.statusText + "\nPOST " + self.url + "\nBody: " + lines.join("\n") + "\nResponse: " + response.data);
             console.logJS(response.data);
@@ -236,19 +237,10 @@ InfluxDbStats.prototype.sendStats = function (lines) {
                 "error",
                 self.langFile.error,
                 "module",
-                "InfluxDbStats"
+                "InfluxDb2Stats"
             );
         }
     };
-    /*
-    if (typeof(self.config.username) !== 'undefined'
-        && typeof(self.config.password) !== 'undefined') {
-        request.auth = {
-            login:      self.config.username,
-            password:   self.config.password
-        };
-    }
-    */
 
     http.request(request);
 };
